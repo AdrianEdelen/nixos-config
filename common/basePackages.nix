@@ -10,6 +10,7 @@
     sops
     gnupg
     pinentry
+    pinentry-curses
   ];
 
 
