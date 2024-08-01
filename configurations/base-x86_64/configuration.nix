@@ -16,9 +16,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = lib.mkDefault "nixos";
-
-  networking.networkmanager.enable = true;
-  time.timeZone = "UTC";
+  networking.networkmanager.enable = lib.mkDefault false;
+  time.timeZone = lib.mkDefault "UTC";
 
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
