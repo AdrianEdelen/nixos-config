@@ -9,7 +9,9 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../../common/users.nix
+      ../../common/basePackages.nix
       ../../common/time.nix
+      ../../common/dev.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

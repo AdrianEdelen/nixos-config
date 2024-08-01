@@ -100,6 +100,13 @@ mount_partitions() {
     echo "Swap partition enabled."
 }
 
+enable_flakes() {
+    echo "Enabling flakes..."
+    mkdir -p /etc/nix
+    echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
+    echo "Flakes enabled."
+}
+
 install_nixos() {
     echo "Cloning the repository..."
     sudo git clone $REPO_URL /mnt/etc/nixos-config
@@ -125,7 +132,7 @@ install_nixos() {
         echo "New configuration files have been generated, moved to the repository, and linked."
     fi
 
-    sudo nixos-install
+    sudo nixos-install --flake /mnt/etc/nixos-config#$HOSTNAME
     echo "NixOS installation complete."
 
     
