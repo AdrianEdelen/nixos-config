@@ -13,7 +13,7 @@
   ];
 
 
-  services.gpg-agent = {
+  services.gnupg.agent = {
     enable = true;
     defaultCacheTtl = 600;
     maxCacheTtl = 7200;
