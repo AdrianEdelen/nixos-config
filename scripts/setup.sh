@@ -98,7 +98,6 @@ install_nixos() {
     sudo mount --bind /proc /mnt/proc
     sudo mount --bind /sys /mnt/sys
 
-    # Chroot into the new system
     sudo chroot /mnt /bin/bash <<EOF
     if [ "$PULL_CONFIG" == "true" ]; then
         # Use the flake configuration if pulled
@@ -110,11 +109,9 @@ install_nixos() {
     fi
 EOF
 
-    # Reboot the system
     sudo reboot
 }
 
-# Main script execution
 get_packages
 list_disks
 select_disk
