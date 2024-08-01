@@ -115,10 +115,8 @@ install_nixos() {
     if [ "$PULL_CONFIG" == "true" ]; then
         echo "Pulling existing configuration for hostname $HOSTNAME..."
         sudo mkdir -p /mnt/etc/nixos
-        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix /mnt/etc/nixos/configuration.nix
-        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
         
-        echo "Custom configuration files have been downloaded and linked."
+        echo "Custom configuration files have been downloaded."
     else
         echo "Generating new NixOS configuration..."
 
@@ -126,10 +124,7 @@ install_nixos() {
         sudo mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix
         sudo mv /mnt/etc/nixos/hardware-configuration.nix /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix
 
-        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix /mnt/etc/nixos/configuration.nix
-        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
-
-        echo "New configuration files have been generated, moved to the repository, and linked."
+        echo "New configuration files have been generated and moved to the repository."
     fi
 
     sudo nixos-install --flake /mnt/etc/nixos-config#$HOSTNAME
