@@ -2,9 +2,17 @@
 { config, pkgs, ... }:
 
 {
-    users.users.adrian = {
-        isNormalUser = true;
-        password = "$y$j9T$JCcuaa0bALWxON4dBQExy0$A5PHtEVd8n5s1Hc7LYVx6IPx7WIP9ZhBeRrGbFZcFf3";
-        extraGroups = [ "wheel" ];
-    };
+    users.mutableUsers = false;
+    
+    users.users = {
+        root = {
+        initialPassword = "root";
+        };
+
+        adrian = {
+            isNormalUser = true;
+            password = "$6$LHbxg9QDCeflSqEx$VZuK00PzAFEQaI2uszoqvz8hlonxnU4NZ/tGTK0eB1wCi2hetSYnRymO65ebTFx2pH9MtbhVlrjbxX3AinAu/.";
+            extraGroups = [ "wheel" ];
+        };
+    }
 }

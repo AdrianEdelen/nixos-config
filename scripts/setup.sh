@@ -128,20 +128,7 @@ install_nixos() {
     sudo nixos-install
     echo "NixOS installation complete."
 
-    sudo mount --bind /dev /mnt/dev
-    sudo mount --bind /proc /mnt/proc
-    sudo mount --bind /sys /mnt/sys
-
-    sudo chroot /mnt /bin/bash <<EOF
-    if [ "$PULL_CONFIG" == "true" ]; then
-        # Use the flake configuration if pulled
-        cd /etc/nixos-config
-        nixos-rebuild switch --flake .#$HOSTNAME
-    else
-        # Use the default configuration
-        nixos-rebuild switch
-    fi
-EOF
+    
 
     sudo reboot
 }
