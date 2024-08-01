@@ -33,7 +33,7 @@ create_partitions() {
 
     read -p "Clearing existing partitions... continue? (y/n): " DO_CLEAR
     if [[ "$DO_CLEAR" == "y" || "$DO_CLEAR" == "Y" ]]; then
-        parted $DISK -- mklabel gpt
+        sudo parted $DISK -- mklabel gpt
     else 
         exit 1
     fi
