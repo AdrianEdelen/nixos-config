@@ -6,5 +6,5 @@
     vim
     wget
     curl
-  ]
+  ];
 }
