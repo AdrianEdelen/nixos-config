@@ -13,10 +13,8 @@
   ];
 
 
-  services.gnupg.agent = {
+  programs.gnupg.agent = {
     enable = true;
-    defaultCacheTtl = 600;
-    maxCacheTtl = 7200;
     pinentryFlavor = "gtk2";
   };
 }
