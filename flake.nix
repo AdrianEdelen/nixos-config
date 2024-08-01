@@ -9,7 +9,7 @@
     outputs = { self, nixpkgs }: {
         nixosConfigurations = {
             base-x86_64 = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux"
+                system = "x86_64-linux";
                 modules = [
                     ./configurations/base/configuration.nix
                 ];
