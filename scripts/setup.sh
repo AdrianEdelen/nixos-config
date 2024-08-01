@@ -18,6 +18,25 @@ select_swap_size() {
     read -p "Enter the size of the swap space (e.g., 8G): " SWAP_SIZE
 }
 
+unmount_existing_partitions() {
+    echo "Unmounting existing partitions on $DISK..."
+    PARTITIONS=$(lsblk -ln -o NAME $DISK | tail -n +2)
+
+    for PART in $PARTITIONS; then
+        MOUNTPOINT=$(lsblk -ln -o MOUNTPOINT /dev/$PART)
+        if [ -n "$MOUNTPOINT" ]; then
+            sudo umount /dev/$PART || true
+        fi
+    done
+
+    # Disable swap on the selected disk
+    for PART in $PARTITIONS; do
+        sudo swapoff /dev/$PART || true
+    done
+
+    echo "Existing partitions on $DISK unmounted."
+}
+
 pull_existing_config() {
     read -p "Do you want to pull an existing configuration? (y/n): " PULL_CONFIG
     REPO_URL="https://github.com/AdrianEdelen/nixos-config.git"
@@ -34,12 +53,14 @@ pull_existing_config() {
 create_partitions() {
 
     read -p "Clearing existing partitions... continue? (y/n): " DO_CLEAR
+    
     if [[ "$DO_CLEAR" == "y" || "$DO_CLEAR" == "Y" ]]; then
-        sudo parted $DISK -- mklabel gpt
+        unmount_existing_partitions
     else 
         exit 1
     fi
     
+    sudo parted $DISK -- mklabel gpt
     echo "Creating partitions on $DISK..."
 
     sudo parted $DISK -- mkpart ESP fat32 1MB 512MB
@@ -130,6 +151,7 @@ list_disks
 select_disk
 select_swap_size
 pull_existing_config
+
 create_partitions
 format_partitions
 mount_partitions
