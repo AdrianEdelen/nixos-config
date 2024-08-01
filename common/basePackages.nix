@@ -8,6 +8,6 @@
     curl
     tree
     sops
-    gpg
+    gnupg
   ];
 }
