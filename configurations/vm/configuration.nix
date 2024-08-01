@@ -18,6 +18,8 @@
   networking.networkmanager.enable = true; 
   time.timeZone = "America/New_York";
 
+  services.openssh.enable = true;
+
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
@@ -69,8 +71,7 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

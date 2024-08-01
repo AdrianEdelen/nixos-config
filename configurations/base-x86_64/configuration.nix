@@ -18,7 +18,7 @@
   networking.hostName = lib.mkDefault "nixos";
 
   networking.networkmanager.enable = true;
-  time.timeZone = "America/New_York";
+  time.timeZone = "UTC";
 
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
