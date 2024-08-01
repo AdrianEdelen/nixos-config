@@ -5,7 +5,7 @@
     git
   ];
 
-  
+
   environment.etc."gitconfig".text = ''
     [user]
         name = "adrian"
@@ -19,6 +19,8 @@
         br = branch
         ci = commit
         st = status
+    [safe]
+        directory = /etc/nixos-config
   '';
 
 }
