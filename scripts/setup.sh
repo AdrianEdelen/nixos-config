@@ -20,11 +20,13 @@ select_swap_size() {
 
 pull_existing_config() {
     read -p "Do you want to pull an existing configuration? (y/n): " PULL_CONFIG
+    REPO_URL="https://github.com/AdrianEdelen/nixos-config.git"
+
     if [[ "$PULL_CONFIG" == "y" || "$PULL_CONFIG" == "Y" ]]; then
         read -p "Enter the hostname to pull the configuration for: " HOSTNAME
-        REPO_URL="https://github.com/AdrianEdelen/nixos-config.git"
         PULL_CONFIG="true"
     else
+        read -p "Enter the hostname for the new configuration: " HOSTNAME
         PULL_CONFIG="false"
     fi
 }
@@ -79,16 +81,28 @@ mount_partitions() {
 }
 
 install_nixos() {
+    echo "Cloning the repository..."
+    sudo git clone $REPO_URL /mnt/etc/nixos-config
+    echo "Repository cloned."
+
     if [ "$PULL_CONFIG" == "true" ]; then
         echo "Pulling existing configuration for hostname $HOSTNAME..."
 
-        sudo git clone $REPO_URL /mnt/etc/nixos-config
-
-        echo "Custom configuration files have been downloaded."
+        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix /mnt/etc/nixos/configuration.nix
+        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
+        
+        echo "Custom configuration files have been downloaded and linked."
     else
-        echo "Generating default NixOS configuration..."
+        echo "Generating new NixOS configuration..."
 
         sudo nixos-generate-config --root /mnt
+        sudo mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix
+        sudo mv /mnt/etc/nixos/hardware-configuration.nix /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix
+
+        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix /mnt/etc/nixos/configuration.nix
+        sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
+
+        echo "New configuration files have been generated, moved to the repository, and linked."
     fi
 
     sudo nixos-install
@@ -111,7 +125,6 @@ EOF
 
     sudo reboot
 }
-
 get_packages
 list_disks
 select_disk
