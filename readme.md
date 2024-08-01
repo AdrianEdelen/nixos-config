@@ -33,3 +33,5 @@ nano /mnt/etc/nixos/configuration.nix
 
 run the nix installer:
 nixos-install
+
+reboot
