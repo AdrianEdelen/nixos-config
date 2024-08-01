@@ -1,3 +1,5 @@
+set -e
+
 get_packages() {
     nix-env -f '<nixpkgs>' -iA git
 }
