@@ -68,12 +68,9 @@ install_nixos() {
     if [ "$PULL_CONFIG" == "true" ]; then
         echo "Pulling existing configuration for hostname $HOSTNAME..."
 
-        sudo git clone $REPO_URL /mnt/root/nixos-config
+        sudo git clone $REPO_URL /mnt/etc/nixos-config
 
-        sudo ln -sf /mnt/root/nixos-config/configurations/$HOSTNAME/configuration.nix /mnt/etc/nixos/configuration.nix
-        sudo ln -sf /mnt/root/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
-
-        echo "Custom configuration files have been downloaded and linked."
+        echo "Custom configuration files have been downloaded."
     else
         echo "Generating default NixOS configuration..."
 
@@ -87,10 +84,11 @@ install_nixos() {
     sudo mount --bind /proc /mnt/proc
     sudo mount --bind /sys /mnt/sys
 
+    # Chroot into the new system
     sudo chroot /mnt /bin/bash <<EOF
     if [ "$PULL_CONFIG" == "true" ]; then
         # Use the flake configuration if pulled
-        cd /root/nixos-config
+        cd /etc/nixos-config
         nixos-rebuild switch --flake .#$HOSTNAME
     else
         # Use the default configuration
@@ -98,9 +96,11 @@ install_nixos() {
     fi
 EOF
 
+    # Reboot the system
     sudo reboot
 }
 
+# Main script execution
 list_disks
 select_disk
 select_swap_size
