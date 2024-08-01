@@ -87,7 +87,7 @@ install_nixos() {
 
     if [ "$PULL_CONFIG" == "true" ]; then
         echo "Pulling existing configuration for hostname $HOSTNAME..."
-
+        sudo mkdir -p /mnt/etc/nixos
         sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix /mnt/etc/nixos/configuration.nix
         sudo ln -sf /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
         
