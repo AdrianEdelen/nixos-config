@@ -8,5 +8,6 @@
     curl
     tree
     sops
+    gpg
   ];
 }
