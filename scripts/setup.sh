@@ -1,3 +1,7 @@
+get_packages() {
+    nix-env -f '<nixpkgs>' -iA wget git
+}
+
 list_disks() {
     echo "Available disks:"
     lsblk -d -n -o NAME,SIZE
@@ -101,6 +105,7 @@ EOF
 }
 
 # Main script execution
+get_packages
 list_disks
 select_disk
 select_swap_size
