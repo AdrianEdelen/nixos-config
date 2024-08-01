@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # List available disks
 list_disks() {
     echo "Available disks:"
