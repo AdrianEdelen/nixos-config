@@ -1,5 +1,3 @@
-#!/bin/bash
-
 list_disks() {
     echo "Available disks:"
     lsblk -d -n -o NAME,SIZE
@@ -18,8 +16,6 @@ pull_existing_config() {
     read -p "Do you want to pull an existing configuration? (y/n): " PULL_CONFIG
     if [[ "$PULL_CONFIG" == "y" || "$PULL_CONFIG" == "Y" ]]; then
         read -p "Enter the hostname to pull the configuration for: " HOSTNAME
-        CONFIG_URL="https://raw.githubusercontent.com/AdrianEdelen/nixos-config/main/configurations/$HOSTNAME/configuration.nix"
-        HARDWARE_CONFIG_URL="https://raw.githubusercontent.com/AdrianEdelen/nixos-config/main/configurations/$HOSTNAME/hardware-configuration.nix"
         REPO_URL="https://github.com/AdrianEdelen/nixos-config.git"
         PULL_CONFIG="true"
     else
@@ -72,10 +68,12 @@ install_nixos() {
     if [ "$PULL_CONFIG" == "true" ]; then
         echo "Pulling existing configuration for hostname $HOSTNAME..."
 
-        wget -O /mnt/etc/nixos/configuration.nix $CONFIG_URL
-        wget -O /mnt/etc/nixos/hardware-configuration.nix $HARDWARE_CONFIG_URL
+        sudo git clone $REPO_URL /mnt/root/nixos-config
 
-        echo "Custom configuration files have been downloaded and replaced."
+        sudo ln -sf /mnt/root/nixos-config/configurations/$HOSTNAME/configuration.nix /mnt/etc/nixos/configuration.nix
+        sudo ln -sf /mnt/root/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
+
+        echo "Custom configuration files have been downloaded and linked."
     else
         echo "Generating default NixOS configuration..."
 
@@ -89,15 +87,15 @@ install_nixos() {
     sudo mount --bind /proc /mnt/proc
     sudo mount --bind /sys /mnt/sys
 
-    sudo chroot /mnt /bin/bash <<'EOF'
-    git clone $REPO_URL /root/nixos-config
-
-    # Symlink the configuration files
-    ln -sf /root/nixos-config/configurations/$HOSTNAME/configuration.nix /etc/nixos/configuration.nix
-    ln -sf /root/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /etc/nixos/hardware-configuration.nix
-
-    # Run nixos-rebuild switch
-    nixos-rebuild switch
+    sudo chroot /mnt /bin/bash <<EOF
+    if [ "$PULL_CONFIG" == "true" ]; then
+        # Use the flake configuration if pulled
+        cd /root/nixos-config
+        nixos-rebuild switch --flake .#$HOSTNAME
+    else
+        # Use the default configuration
+        nixos-rebuild switch
+    fi
 EOF
 
     sudo reboot
