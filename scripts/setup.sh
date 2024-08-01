@@ -1,5 +1,7 @@
+#!/bin/bash
+
 get_packages() {
-    nix-env -f '<nixpkgs>' -iA wget git
+    nix-env -f '<nixpkgs>' -iA git
 }
 
 list_disks() {
