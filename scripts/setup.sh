@@ -22,14 +22,13 @@ unmount_existing_partitions() {
     echo "Unmounting existing partitions on $DISK..."
     PARTITIONS=$(lsblk -ln -o NAME $DISK | tail -n +2)
 
-    for PART in $PARTITIONS; then
+    for PART in $PARTITIONS; do
         MOUNTPOINT=$(lsblk -ln -o MOUNTPOINT /dev/$PART)
         if [ -n "$MOUNTPOINT" ]; then
             sudo umount /dev/$PART || true
         fi
     done
 
-    # Disable swap on the selected disk
     for PART in $PARTITIONS; do
         sudo swapoff /dev/$PART || true
     done
