@@ -1,5 +1,3 @@
-#!/bin/bash
-
 get_packages() {
     nix-env -f '<nixpkgs>' -iA git
 }
