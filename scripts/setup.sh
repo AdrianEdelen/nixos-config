@@ -30,6 +30,14 @@ pull_existing_config() {
 }
 
 create_partitions() {
+
+    echo "Clearing existing partitions... continue? (y/n):" DO_CLEAR
+    if [[ "$DO_CLEAR" == "y" || "$DO_CLEAR" == "Y" ]]; then
+        parted $DISK -- mklabel gpt
+    else 
+        exit 1
+    fi
+    
     echo "Creating partitions on $DISK..."
 
     sudo parted $DISK -- mkpart ESP fat32 1MB 512MB
