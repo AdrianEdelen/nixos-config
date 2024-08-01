@@ -31,7 +31,7 @@ pull_existing_config() {
 
 create_partitions() {
 
-    echo "Clearing existing partitions... continue? (y/n):" DO_CLEAR
+    read -p "Clearing existing partitions... continue? (y/n): " DO_CLEAR
     if [[ "$DO_CLEAR" == "y" || "$DO_CLEAR" == "Y" ]]; then
         parted $DISK -- mklabel gpt
     else 
