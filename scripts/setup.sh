@@ -1,96 +1,112 @@
-# List available disks
+#!/bin/bash
+
 list_disks() {
     echo "Available disks:"
     lsblk -d -n -o NAME,SIZE
 }
 
-# Ask user for the disk to partition
 select_disk() {
     read -p "Enter the disk to partition (e.g., sda): " DISK
     DISK="/dev/$DISK"
 }
 
-# Ask user for the swap space size
 select_swap_size() {
     read -p "Enter the size of the swap space (e.g., 8G): " SWAP_SIZE
 }
 
-# Function to create partitions
+pull_existing_config() {
+    read -p "Do you want to pull an existing configuration? (y/n): " PULL_CONFIG
+    if [[ "$PULL_CONFIG" == "y" || "$PULL_CONFIG" == "Y" ]]; then
+        read -p "Enter the hostname to pull the configuration for: " HOSTNAME
+        CONFIG_URL="https://raw.githubusercontent.com/AdrianEdelen/nixos-config/main/configurations/$HOSTNAME/configuration.nix"
+        HARDWARE_CONFIG_URL="https://raw.githubusercontent.com/AdrianEdelen/nixos-config/main/configurations/$HOSTNAME/hardware-configuration.nix"
+        REPO_URL="https://github.com/AdrianEdelen/nixos-config.git"
+        PULL_CONFIG="true"
+    else
+        PULL_CONFIG="false"
+    fi
+}
+
 create_partitions() {
     echo "Creating partitions on $DISK..."
 
-    # Create root partition
-    sudo parted $DISK --script mkpart primary ext4 512MB -$SWAP_SIZE
+    sudo parted $DISK -- mkpart ESP fat32 1MB 512MB
+    sudo parted $DISK -- set 1 esp on
+    echo "ESP partition created and set."
+
+    sudo parted $DISK -- mkpart primary ext4 512MB -$SWAP_SIZE
     echo "Root partition created."
 
-    # Create swap partition
-    sudo parted $DISK --script mkpart primary linux-swap -$SWAP_SIZE 100%
+    sudo parted $DISK -- mkpart primary linux-swap -$SWAP_SIZE 100%
     echo "Swap partition created."
-
-    # Create ESP partition
-    sudo parted $DISK --script mkpart primary fat32 1MB 512MB
-    echo "ESP partition created."
-
-    # Set ESP flag on the third partition
-    sudo parted $DISK --script set 3 esp on
-    echo "ESP flag set on partition 3."
 }
 
-# Function to format partitions
 format_partitions() {
     echo "Formatting partitions..."
 
-    # Format root partition as ext4
-    sudo mkfs.ext4 -L nixos ${DISK}1
+    sudo mkfs.fat -F 32 -n boot ${DISK}1
+    echo "ESP partition formatted as FAT32."
+
+    sudo mkfs.ext4 -L nixos ${DISK}2
     echo "Root partition formatted as ext4."
 
-    # Format swap partition
-    sudo mkswap -L swap ${DISK}2
+    sudo mkswap -L swap ${DISK}3
     echo "Swap partition formatted as swap."
-
-    # Format ESP partition as FAT32
-    sudo mkfs.fat -F 32 -n boot ${DISK}3
-    echo "ESP partition formatted as FAT32."
 }
 
-# Function to mount partitions
 mount_partitions() {
     echo "Mounting partitions..."
 
-    # Mount root partition
     sudo mount /dev/disk/by-label/nixos /mnt
     echo "Root partition mounted."
 
-    # Create boot directory and mount ESP partition
     sudo mkdir -p /mnt/boot
     sudo mount -o umask=077 /dev/disk/by-label/boot /mnt/boot
     echo "ESP partition mounted."
 
-    # Enable swap
-    sudo swapon ${DISK}2
+    sudo swapon ${DISK}3
     echo "Swap partition enabled."
 }
 
-# Function to generate base config and run the NixOS installer
 install_nixos() {
-    echo "Generating base config and running NixOS installer..."
+    if [ "$PULL_CONFIG" == "true" ]; then
+        echo "Pulling existing configuration for hostname $HOSTNAME..."
 
-    # Generate NixOS configuration
-    sudo nixos-generate-config --root /mnt
-    sudo nano /mnt/etc/nixos/configuration.nix
+        wget -O /mnt/etc/nixos/configuration.nix $CONFIG_URL
+        wget -O /mnt/etc/nixos/hardware-configuration.nix $HARDWARE_CONFIG_URL
 
-    # Run NixOS installer
+        echo "Custom configuration files have been downloaded and replaced."
+    else
+        echo "Generating default NixOS configuration..."
+
+        sudo nixos-generate-config --root /mnt
+    fi
+
     sudo nixos-install
     echo "NixOS installation complete."
 
-    # Reboot the system
+    sudo mount --bind /dev /mnt/dev
+    sudo mount --bind /proc /mnt/proc
+    sudo mount --bind /sys /mnt/sys
+
+    sudo chroot /mnt /bin/bash <<'EOF'
+    git clone $REPO_URL /root/nixos-config
+
+    # Symlink the configuration files
+    ln -sf /root/nixos-config/configurations/$HOSTNAME/configuration.nix /etc/nixos/configuration.nix
+    ln -sf /root/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix /etc/nixos/hardware-configuration.nix
+
+    # Run nixos-rebuild switch
+    nixos-rebuild switch
+EOF
+
     sudo reboot
 }
 
-# Main script execution
 list_disks
 select_disk
 select_swap_size
+pull_existing_config
 create_partitions
 format_partitions
 mount_partitions

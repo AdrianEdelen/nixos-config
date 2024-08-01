@@ -1,4 +1,0 @@
-To Make the setup scripts executable and execute the startup script:
-cd nixos-config/
-sudo chmod +x scripts/
-./scripts/setup.sh

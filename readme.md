@@ -2,7 +2,7 @@
 
 ## QUICK START
 enter this in your terminal to get up and going: running this script will format your drives and install attempt to install a new operating system
-`nix-env -f '<nixpkgs>' -iA wget && wget https://dblt.rip/nixos-setup -O nixos_install.sh && chmod +x nixos_install.sh && sudo ./nixos_install.sh` 
+`nix-env -f '<nixpkgs>' -iA wget git && wget https://dblt.rip/nixos-setup -O nixos_install.sh && chmod +x nixos_install.sh && sudo ./nixos_install.sh` 
 
 
 On a fresh system where you want to install nix as the only os on the disk run `setup.sh` this script creates partitions for you and begins the setup process.
