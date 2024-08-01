@@ -1,5 +1,5 @@
 # common/users.nix
-{ config, pkgs, ... };
+{ config, pkgs, ... }:
 
 {
     users.users.adrian = {
