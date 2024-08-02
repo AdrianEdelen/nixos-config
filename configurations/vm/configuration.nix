@@ -18,8 +18,11 @@
   networking.networkmanager.enable = true; 
   time.timeZone = "America/New_York";
 
-  services.openssh.enable = true;
-
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "no";
+    passwordAuthentication = false;
+  };
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
