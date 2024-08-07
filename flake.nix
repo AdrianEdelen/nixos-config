@@ -20,16 +20,16 @@
                 system = "x86_64-linux";
                 modules = [
                     sops-nix.nixosModules.sops
-                    ./configurations/base-x86-64/vm/configuration.nix
-                    ./configurations/base-x86064/vm/vm-tty/configuration.nix
+                    ./configurations/base-x86_64/vm/configuration.nix
+                    ./configurations/base-x86_64/vm/vm-tty/configuration.nix
                 ];
             };
             vm-xfce = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     sops-nix.nixosModules.sops
-                    ./configurations/base-x86-64/vm/configuration.nix
-                    ./configurations/base-x86-64/vm/vm-xfce/configuration.nix
+                    ./configurations/base-x86_64/vm/configuration.nix
+                    ./configurations/base-x86_64/vm/vm-xfce/configuration.nix
                 ];
             };
         };
