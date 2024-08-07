@@ -16,7 +16,7 @@
     #pinentry-curses
   ];
 
-  services.gog-agent.enable = true;
+  services.gpg-agent.enable = true;
   services.gpg-agent.pinentryFlavor = "pinentry-tty";
   programs.gnupg.agent = {
     enable = true;
