@@ -1,16 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [
-      ../../common/users.nix
-      ../../common/basePackages.nix
-      ../../common/time.nix
-      ../../common/dev.nix
-      ../../common/internet.nix
-    ];
+  imports = [ ];
 
-  networking.hostName = "vm";
+  networking.hostName = "vm-xfce";
   networking.networkmanager.enable = true; 
   time.timeZone = "America/New_York";
 

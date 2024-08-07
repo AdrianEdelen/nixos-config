@@ -4,9 +4,11 @@
   imports =
     [ 
       ./hardware-configuration.nix
-      ../../common/users.nix
-      ../../common/basePackages.nix
-      ../../common/time.nix
+      ../../../common/users.nix
+      ../../../common/basePackages.nix
+      ../../../common/time.nix
+      ../../../common/dev.nix
+      ../../../common/internet.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
