@@ -3,6 +3,7 @@
 {
   imports =
     [ 
+      ./hardware-configuration.nix
       ../../common/users.nix
       ../../common/basePackages.nix
       ../../common/time.nix

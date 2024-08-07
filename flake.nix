@@ -9,20 +9,29 @@
 
     outputs = { self, nixpkgs }: {
         nixosConfigurations = {
-            base-x86_64 = nixpkgs.lib.nixosSystem {
+            # base-x86_64 = nixpkgs.lib.nixosSystem {
+            #     system = "x86_64-linux";
+            #     modules = [
+            #         sops-nix.nixosModules.sops
+            #         ./configurations/base-x86-64/configuration.nix
+            #     ];
+            # };
+            vm-tty = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     sops-nix.nixosModules.sops
-                    ./configurations/base/configuration.nix
+                    ./configurations/base-x86-64/vm/configuration.nix
+                    ./configurations/vm/vm-tty/configuration.nix
                 ];
             };
-            vm = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
+            vm-xfce = nixpkgs.lib.nixosSystem {
+                system = "x86-64-linux";
                 modules = [
-                    ./configurations/base-x86_64/configuration.nix
-                    ./configurations/vm/configuration.nix
+                    sops-nix.nixosModules.sops
+                    ./configurations/base-x86-64/vm/configuration.nix
+                    ./configurations/base-x86-64/vm/vm-xfce/configuration.nix
                 ];
-            };
+            }
         };
     };
 }
