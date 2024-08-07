@@ -7,7 +7,7 @@
         sops-nix.url = "github:Mic92/sops-nix";
     };
 
-    outputs = { self, nixpkgs }: {
+    outputs = { self, nixpkgs, sops-nix }: {
         nixosConfigurations = {
             # base-x86_64 = nixpkgs.lib.nixosSystem {
             #     system = "x86_64-linux";
@@ -21,11 +21,11 @@
                 modules = [
                     sops-nix.nixosModules.sops
                     ./configurations/base-x86-64/vm/configuration.nix
-                    ./configurations/vm/vm-tty/configuration.nix
+                    ./configurations/base-x86064/vm/vm-tty/configuration.nix
                 ];
             };
             vm-xfce = nixpkgs.lib.nixosSystem {
-                system = "x86-64-linux";
+                system = "x86_64-linux";
                 modules = [
                     sops-nix.nixosModules.sops
                     ./configurations/base-x86-64/vm/configuration.nix
