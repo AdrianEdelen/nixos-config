@@ -31,7 +31,7 @@
                     ./configurations/base-x86-64/vm/configuration.nix
                     ./configurations/base-x86-64/vm/vm-xfce/configuration.nix
                 ];
-            }
+            };
         };
     };
 }
