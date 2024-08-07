@@ -1,5 +1,15 @@
 { config, lib, pkgs, ... }:
 
+let
+  usersConfig = import ../../../common/users.nix;
+  sopsSecrets = lib.mapAttrs (userName: userConfig: {
+    file = ../../../keys/"${userName}_id_ed25519.sops"; # Path to your encrypted SSH private key
+    destination = "/home/${userName}/.ssh/id_ed25519";
+    user = userName;
+    group = userName;
+    mode = "0600";
+  }) usersConfig.users;
+in
 {
   imports =
     [ 
@@ -21,6 +31,8 @@
   networking.hostName = lib.mkDefault "nixos";
   networking.networkmanager.enable = lib.mkDefault false;
   time.timeZone = lib.mkDefault "UTC";
+
+  sops.
 
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {

@@ -18,6 +18,23 @@ select_swap_size() {
     read -p "Enter the size of the swap space (e.g., 8G): " SWAP_SIZE
 }
 
+# generate_temp_ssh_key() {
+#     ssh-keygen -t ed25519 -C "temporary-key" -f /root/.ssh/temp_id_ed25519
+#     cat /root/.ssh/temp_id_ed25519.pub
+#     read -p "Press Enter once you have added the public key to your server..."
+
+#     #setup an endpoint for the server
+#     ssh -i /root/.ssh/temp_id_ed25519 user@server << EOF
+#     scp user@secure-server:/path/to/gpg-private-key /root/.gnupg/private-keys-v1.d/private.key
+#     chmod 600 /root/.gnupg/private-keys-v1.d/private.key
+# EOF
+
+#     rm -f /root/.ssh/temp_id_ed25519
+#     rm -f /root/.ssh/temp_id_ed25519.pub
+#     rmdir /root/.ssh 2>/dev/null || true
+
+# }
+
 unmount_existing_partitions() {
     echo "Unmounting existing partitions on $DISK..."
     PARTITIONS=$(lsblk -ln -o NAME $DISK | tail -n +2)
