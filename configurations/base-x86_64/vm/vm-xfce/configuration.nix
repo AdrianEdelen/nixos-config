@@ -17,7 +17,10 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-
+  #xfce and light dm
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.lightdm.greeters.gtk.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
   
 
   # Configure keymap in X11
