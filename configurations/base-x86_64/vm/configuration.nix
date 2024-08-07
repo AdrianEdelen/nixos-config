@@ -3,7 +3,7 @@
 let
   usersConfig = import ../../../common/users.nix;
   sopsSecrets = lib.mapAttrs (userName: userConfig: {
-    file = ../../../keys/"${userName}_id_ed25519.sops"; # Path to your encrypted SSH private key
+    file = "../../../keys/${userName}_id_ed25519.sops"; 
     destination = "/home/${userName}/.ssh/id_ed25519";
     user = userName;
     group = userName;
