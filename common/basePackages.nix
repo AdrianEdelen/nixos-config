@@ -8,8 +8,8 @@
     curl
     tree
     sops
-    #gnupg
-    gpg
+    gnupg
+    #gpg
     gpg-agent
     pinentry-tty
     #pinentry
