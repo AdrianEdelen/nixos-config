@@ -44,10 +44,10 @@ in
 
   #set ssh agent
   #i am not sure if the agent is set already.
-  systemd.user.ssh-agent = {
-    enable = true;
-    environment.SSH_AUTH_SOCK = "${config.systemd.user.ssh-agent.unit.Sockets.SSH_AUTH_SOCK}";
-  };
+  # systemd.user.ssh-agent = {
+  #   enable = true;
+  #   environment.SSH_AUTH_SOCK = "${config.systemd.user.ssh-agent.unit.Sockets.SSH_AUTH_SOCK}";
+  # };
 
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
