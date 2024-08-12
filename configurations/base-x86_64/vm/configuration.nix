@@ -13,6 +13,21 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  environment.systemPackages = with pkgs; [
+    nfs-utils
+  ];
+
+  #TODO how to make this generic? e.g. what if user name changes
+  fileSystems."/home/adrian" = {
+    device = "192.168.1.41:/mnt/user/Adrian"; #nfs share on gary
+    fsType = "nfs";
+  };
+
+  services = {
+    nfs.client.enable = true;
+  };
+  
+
   environment.variables.EDITOR = "vim";
 
   boot.loader.systemd-boot.enable = true;
@@ -21,6 +36,8 @@
   networking.hostName = lib.mkDefault "nixos";
   networking.networkmanager.enable = lib.mkDefault false;
   time.timeZone = lib.mkDefault "UTC";
+
+
 
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
