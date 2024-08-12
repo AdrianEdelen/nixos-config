@@ -10,8 +10,8 @@
     sops
     gnupg
     #gpg
-    gpg-agent
-    pinentry-tty
+    #gpg-agent
+    #pinentry-tty
     #pinentry
     #pinentry-curses
   ];
