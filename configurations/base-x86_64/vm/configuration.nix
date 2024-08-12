@@ -22,7 +22,9 @@
     device = "192.168.1.41:/mnt/user/Adrian"; #nfs share on gary
     fsType = "nfs";
   };
-  programs.zsh.enable = true;
+  
+  #TODO why is zsh being a bee-sh
+  #programs.zsh.enable = true;
   
 
   environment.variables.EDITOR = "vim";
