@@ -3,7 +3,7 @@
 let
   usersConfig = import ../../../common/users.nix;
   sopsSecrets = lib.mapAttrs (userName: userConfig: {
-    file = "../../../keys/${userName}_id_ed25519.sops"; 
+    file = "../../../keys/${userName}_ssh"; 
     destination = "/home/${userName}/.ssh/id_ed25519";
     user = userName;
     group = userName;
@@ -32,7 +32,22 @@ in
   networking.networkmanager.enable = lib.mkDefault false;
   time.timeZone = lib.mkDefault "UTC";
 
-  sops.
+  I don't think we need this
+  #apply sops-nix ssh keys
+  # environment.etc = lib.mapAttrs' (userName: secret: {
+  #   source = secret.file;
+  #   target = secret.destination;
+  #   user = secret.user;
+  #   group = secret.group;
+  #   mode = secret.mode;
+  # }) sopsSecrets;
+
+  #set ssh agent
+  #i am not sure if the agent is set already.
+  systemd.user.ssh-agent = {
+    enable = true;
+    environment.SSH_AUTH_SOCK = "${config.systemd.user.ssh-agent.unit.Sockets.SSH_AUTH_SOCK}";
+  };
 
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
