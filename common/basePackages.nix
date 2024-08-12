@@ -16,11 +16,11 @@
     #pinentry-curses
   ];
 
-  services.gpg-agent.enable = true;
-  services.gpg-agent.pinentryFlavor = "pinentry-tty";
-  programs.gnupg.agent = {
-    enable = true;
-  };
+  # services.gpg-agent.enable = true;
+  # services.gpg-agent.pinentryFlavor = "pinentry-tty";
+  # programs.gnupg.agent = {
+  #   enable = true;
+  # };
   # programs.gnupg.agent = {
   #   enable = true;
   #   pinentryPackage = pkgs.pinentry-curses;
