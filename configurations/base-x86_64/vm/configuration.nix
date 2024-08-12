@@ -23,9 +23,6 @@
     fsType = "nfs";
   };
 
-  services = {
-    nfs.client.enable = true;
-  };
   
 
   environment.variables.EDITOR = "vim";
