@@ -32,7 +32,7 @@ in
   networking.networkmanager.enable = lib.mkDefault false;
   time.timeZone = lib.mkDefault "UTC";
 
-  I don't think we need this
+  #I don't think we need this
   #apply sops-nix ssh keys
   # environment.etc = lib.mapAttrs' (userName: secret: {
   #   source = secret.file;
