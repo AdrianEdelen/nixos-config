@@ -18,10 +18,10 @@
   ];
 
   #TODO how to make this generic? e.g. what if user name changes
-  fileSystems."/home/adrian" = {
-    device = "192.168.1.41:/mnt/user/Adrian"; #nfs share on gary
-    fsType = "nfs";
-  };
+  # fileSystems."/home/adrian" = {
+  #   device = "192.168.1.41:/mnt/user/Adrian"; #nfs share on gary
+  #   fsType = "nfs";
+  # };
   
   #TODO why is zsh being a bee-sh
   #programs.zsh.enable = true;
