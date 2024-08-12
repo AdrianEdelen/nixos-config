@@ -9,7 +9,6 @@
       ../../../common/time.nix
       ../../../common/dev.nix
       ../../../common/internet.nix
-      <sops-nix/modules/sops>
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
