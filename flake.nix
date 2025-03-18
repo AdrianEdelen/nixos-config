@@ -41,7 +41,7 @@
             server = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
-                    ./configurations/base-x86_64/desktop/configuration.nix
+                    ./configurations/base-x86_64/server/configuration.nix
                 ];
             };
         };
