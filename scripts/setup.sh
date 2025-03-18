@@ -59,7 +59,7 @@ pull_existing_config() {
 
     if [[ "$PULL_CONFIG" == "y" || "$PULL_CONFIG" == "Y" ]]; then
         read -p "Enter the hostname to pull the configuration for: " HOSTNAME
-        read -p "Enter the base config to pull the config for: BASE_CONFIG
+        read -p "Enter the base config to pull the config for: " BASE_CONFIG
         PULL_CONFIG="true"
     else
         read -p "Enter the hostname for the new configuration: " HOSTNAME
