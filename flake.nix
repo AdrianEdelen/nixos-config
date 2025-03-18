@@ -37,13 +37,13 @@
                 modules = [
                     ./configurations/base-x86_64/desktop/configuration.nix
                 ]
-            }
+            };
             server = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     ./configurations/base-x86_64/desktop/configuration.nix
                 ]
-            }
+            };
         };
     };
 }
