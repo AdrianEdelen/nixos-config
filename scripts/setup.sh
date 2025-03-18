@@ -59,6 +59,7 @@ pull_existing_config() {
 
     if [[ "$PULL_CONFIG" == "y" || "$PULL_CONFIG" == "Y" ]]; then
         read -p "Enter the hostname to pull the configuration for: " HOSTNAME
+        read -p "Enter the base config to pull the config for: BASE_CONFIG
         PULL_CONFIG="true"
     else
         read -p "Enter the hostname for the new configuration: " HOSTNAME
@@ -138,8 +139,8 @@ install_nixos() {
         echo "Generating new NixOS configuration..."
 
         sudo nixos-generate-config --root /mnt
-        sudo mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos-config/configurations/$HOSTNAME/configuration.nix
-        sudo mv /mnt/etc/nixos/hardware-configuration.nix /mnt/etc/nixos-config/configurations/$HOSTNAME/hardware-configuration.nix
+        sudo mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos-config/configurations/$BASE_CONFIG/$HOSTNAME/configuration.nix
+        sudo mv /mnt/etc/nixos/hardware-configuration.nix /mnt/etc/nixos-config/configurations/$BASE_CONFIG/$HOSTNAME/hardware-configuration.nix
 
         echo "New configuration files have been generated and moved to the repository."
     fi
