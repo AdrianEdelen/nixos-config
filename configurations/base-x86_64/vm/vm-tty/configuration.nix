@@ -2,10 +2,11 @@
 
 {
   imports = [ 
-    ../../../common/basePackages.nix
-    ../../../common/time.nix
-    ../../../common/dev.nix
-    ../../../common/internet.nix
+    ../../../../common/basePackages.nix
+    ../../../../common/time.nix
+    ../../../../common/dev.nix
+    ../../../../common/internet.nix
+    
   ];
 
   networking.hostName = "vm-tty";
