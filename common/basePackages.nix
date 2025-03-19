@@ -7,8 +7,8 @@
     wget
     curl
     tree
-    sops
-    gnupg
+    #sops
+    #gnupg
     #gpg
     #gpg-agent
     #pinentry-tty

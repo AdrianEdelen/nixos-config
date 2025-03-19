@@ -1,7 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ];
+  imports = [ 
+    ../../../common/basePackages.nix
+    ../../../common/time.nix
+    ../../../common/dev.nix
+    ../../../common/internet.nix
+  ];
 
   networking.hostName = "vm-tty";
   networking.networkmanager.enable = true; 
@@ -13,9 +18,13 @@
     passwordAuthentication = false;
   };
 
-  users.users.admin {
-    isNormalUser = true
-  }
+  users.users.admin = {
+  isNormalUser = true;
+  description = "Administrator";
+  extraGroups = [ "wheel" "networkmanager" ];  
+  shell = pkgs.bash;  
+};
+
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
