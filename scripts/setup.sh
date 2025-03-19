@@ -139,8 +139,17 @@ install_nixos() {
         echo "Generating new NixOS configuration..."
 
         sudo nixos-generate-config --root /mnt
-        sudo mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos-config/configurations/$BASE_CONFIG/$HOSTNAME/configuration.nix
-        sudo mv /mnt/etc/nixos/hardware-configuration.nix /mnt/etc/nixos-config/configurations/$BASE_CONFIG/$HOSTNAME/hardware-configuration.nix
+        
+        TARGET_PATH="/mnt/etc/nixos-config/configurations"
+
+        if [[ -n "$BASE_CONFIG" ]]; then
+            TARGET_PATH="$TARGET_PATH/$BASE_CONFIG"
+        fi
+
+        TARGET_PATH="$TARGET_PATH/$HOSTNAME/hardware-configuration.nix"
+        TARGET_PATH="$TARGET_PATH/$HOSTNAME/configuration.nix"
+
+        sudo mv /mnt/etc/nixos/hardware-configuration.nix "$TARGET_PATH"
 
         echo "New configuration files have been generated and moved to the repository."
     fi
