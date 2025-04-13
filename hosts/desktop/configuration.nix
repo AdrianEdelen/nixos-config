@@ -90,11 +90,13 @@
     description = "Adrian";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      kdePackages.kate
-      git
-      thunderbird
+
     ];
   };
+
+  environment.systemPackages = with pkgs; [
+    wget
+  ];
 
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
@@ -103,16 +105,12 @@
   # Install firefox.
   programs.firefox.enable = true;
   programs.steam.enable = true;
-  # Allow unfree packages
+
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    discord
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -125,7 +123,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

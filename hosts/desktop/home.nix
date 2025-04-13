@@ -10,6 +10,9 @@
     bat
     eza
     starship
+    kdePackages.kate
+    thunderbird
+    discord
   ];
 
   programs.git.enable = true;
