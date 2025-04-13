@@ -17,7 +17,6 @@
           ./hosts/desktop/configuration.nix
           home-manager.nixosModules.home-manager
           {
-            nix.settings.experimental-features = [ "nix-command" "flakes" ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.adrian = import ./hosts/desktop/home.nix;
