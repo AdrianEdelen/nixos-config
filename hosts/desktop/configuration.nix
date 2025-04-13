@@ -12,11 +12,10 @@
 
 
   nix = {
-    package = pkgs.nixVersions.stable;
-    extraOptions = ''
-      experimental-features = nix-command nixFlakes
-    '';
+  package = pkgs.nixVersions.stable;
+  settings.experimental-features = [ "nix-command" "flakes" ];
   };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -67,7 +66,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -93,23 +92,24 @@
     packages = with pkgs; [
       kdePackages.kate
       git
-    #  thunderbird
+      thunderbird
     ];
   };
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "adrian";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "adrian";
 
   # Install firefox.
   programs.firefox.enable = true;
-
+  programs.steam.enable = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    discord
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
