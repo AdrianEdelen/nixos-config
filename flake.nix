@@ -1,43 +1,28 @@
-# flake.nix
 {
-    description = "My NixOS configuration with Flakes";
+  description = "My NixOS system";
 
-    inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-        sops-nix.url = "github:Mic92/sops-nix";
-    };
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-    outputs = { self, nixpkgs, sops-nix }: {
-        nixosConfigurations = {
-            # base-x86_64 = nixpkgs.lib.nixosSystem {
-            #     system = "x86_64-linux";
-            #     modules = [
-            #         sops-nix.nixosModules.sops
-            #         ./configurations/base-x86-64/configuration.nix
-            #     ];
-            # };
-            vm-tty = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    sops-nix.nixosModules.sops
-                    ./configurations/base-x86_64/vm/configuration.nix
-                    ./configurations/base-x86_64/vm/vm-tty/configuration.nix
-                ];
-            };
-            vm-xfce = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    sops-nix.nixosModules.sops
-                    ./configurations/base-x86_64/vm/configuration.nix
-                    ./configurations/base-x86_64/vm/vm-xfce/configuration.nix
-                ];
-            };
-            desktop = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    ./configurations/base-x86_64/desktop/configuration.nix
-                ];
-            };
-        };
+  outputs = { nixpkgs, home-manager, ... }@inputs:
+    let
+      system = "x86_64-linux";
+    in {
+      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./hosts/desktop/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            nix.settings.experimental-features = [ "nix-command" "flakes" ];
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.adrian = import ./hosts/desktop/home.nix;
+          }
+        ];
+      };
     };
 }
