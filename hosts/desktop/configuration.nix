@@ -87,10 +87,14 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  security.sudo.enable = true;
+  users.mutableUsers = false;
   users.users.adrian = {
     isNormalUser = true;
+    hashedPassword = "$6$Nux8v67JfYvf6PLa$pryAbDzBCA1UKbrz6nzeJR0xzzAydsFJBij6OrOHxwy1JPboF.zWlpEXiYf3.1uqqJkTS1CHZtFP98/uc6WDG1";
     description = "Adrian";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.fish;
     packages = with pkgs; [
 
     ];
@@ -105,6 +109,7 @@
   services.displayManager.autoLogin.user = "adrian";
 
   # Install firefox.
+  programs.fish.enable = true;
   programs.firefox.enable = true;
   programs.steam.enable = true;
 

@@ -1,3 +1,4 @@
+
 { config, pkgs, ... }:
 
 {
@@ -36,7 +37,37 @@
     };
   };
 
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = false;
+      character = {
+        success_symbol = "[➜](bold green)";
+        error_symbol = "[✗](bold red)";
+      };
+      git_branch = {
+       symbol = "🌱 ";
+       };
+    };
+  };
+  programs.fish.enable = true;
 
+  # xdg.configFile."konsolerc".source = ./dotfiles/konsolerc; <- example dotfile, where we create it
+#   xdg.userDirs = {
+#     enable = true;
+#
+#     desktop = null;
+#     documents = "${config.home.homeDirectory}/Documents";
+#     download = "${config.home.homeDirectory}/Downloads";
+#     music = null;
+#     pictures = null;
+#     publicShare = null;
+#     templates = null;
+#     videos = null;
+#   };
 
   home.stateVersion = "24.05";
 }
+#ok so i probably won't mess with those files for now.
+
+#my next question, is how can i force apps to not pollute my home dir.
