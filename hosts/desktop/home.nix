@@ -4,19 +4,39 @@
   home.username = "adrian";
   home.homeDirectory = "/home/adrian";
 
-  programs.home-manager.enable = true;
+  programs.zsh.enable = false;
 
   home.packages = with pkgs; [
     bat
     eza
-    starship
     kdePackages.kate
     thunderbird
     discord
   ];
 
-  programs.git.enable = true;
-  programs.zsh.enable = true;
+
+  programs.git = {
+    enable = true;
+    userName = "Adrian E";
+    userEmail = "adrian@edelen.haus";
+
+    extraConfig = {
+      init.defaultBranch = "main";
+      pull.rebase = false;
+      core.editor = "nano";
+      push.autoSetupRemote = true;
+    };
+
+    aliases = {
+      co = "checkout";
+      br = "branch";
+      ci = "commit";
+      st = "status";
+      lg = "log --oneline --graph --decorate";
+    };
+  };
+
+
 
   home.stateVersion = "24.05";
 }
