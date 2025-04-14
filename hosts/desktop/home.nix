@@ -13,6 +13,7 @@
     kdePackages.kate
     thunderbird
     discord
+    protonup-qt
   ];
 
 
