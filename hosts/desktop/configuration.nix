@@ -114,7 +114,27 @@
   programs.steam.enable = true;
 
   nixpkgs.config.allowUnfree = true;
+  programs.partition-manager.enable = true;
+    # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+  };
 
+  services.xserver.videoDrivers = ["nvidia"];
+
+  boot = {
+
+  initrd.kernelModules = [ "nvidia" "i915" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  };
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false; #<- nvidias open implementation not noveau
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
+  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 

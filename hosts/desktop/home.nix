@@ -14,6 +14,9 @@
     thunderbird
     discord
     protonup-qt
+    btop
+    protontricks
+    signal-desktop-bin
   ];
 
 
@@ -51,7 +54,27 @@
        };
     };
   };
-  programs.fish.enable = true;
+  programs.fish = {
+  enable = true;
+  shellInit = ''
+    function nix-switch
+        set flake $argv[1]
+
+        if test -z "$flake"
+            echo "Usage: nix-switch <flake> [-i]"
+            return 1
+        end
+
+        set impure_flag ""
+        if contains -i -- -i $argv
+            set impure_flag "--impure"
+        end
+
+        nixos-rebuild switch --flake ~/Documents/nixos-config#$flake $impure_flag
+    end
+  '';
+};
+
 
   # xdg.configFile."konsolerc".source = ./dotfiles/konsolerc; <- example dotfile, where we create it
 #   xdg.userDirs = {
