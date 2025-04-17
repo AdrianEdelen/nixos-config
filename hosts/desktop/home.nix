@@ -2,10 +2,10 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "adrian";
-  home.homeDirectory = "/home/adrian";
 
-  programs.zsh.enable = false;
+  imports = [
+    ../../modules
+  ];
 
   home.packages = with pkgs; [
     bat
@@ -13,13 +13,11 @@
     kdePackages.kate
     thunderbird
     discord
-    protonup-qt
     btop
-    protontricks
     signal-desktop-bin
   ];
 
-
+  tofu.gaming.enable = true;
   programs.git = {
     enable = true;
     userName = "Adrian E";
@@ -50,8 +48,8 @@
         error_symbol = "[✗](bold red)";
       };
       git_branch = {
-       symbol = "🌱 ";
-       };
+      symbol = "🌱 ";
+      };
     };
   };
   programs.fish = {
