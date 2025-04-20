@@ -6,6 +6,9 @@
 
 {
 
+# something i would like to do is have the main module and then the 'extended' versions of each
+# the main module has the bare minimum and the extended has gui and other additions
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -113,6 +116,7 @@
   programs.firefox.enable = true;
 
   tofu.gaming.enable = true;
+  tofu.bluetooth.enable = true;
 
 
   #programs.steam.enable = true;
