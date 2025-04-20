@@ -9,7 +9,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-    ];
+    ] ++ import ../../modules/system;
 
 
   nix = {
@@ -111,7 +111,11 @@
   # Install firefox.
   programs.fish.enable = true;
   programs.firefox.enable = true;
-  programs.steam.enable = true;
+
+  tofu.gaming.enable = true;
+
+
+  #programs.steam.enable = true;
 
   nixpkgs.config.allowUnfree = true;
   programs.partition-manager.enable = true;

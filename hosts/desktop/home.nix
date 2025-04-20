@@ -3,9 +3,8 @@
 
 {
 
-  imports = [
-    ../../modules
-  ];
+  imports = import ../../modules/home;
+
 
   home.packages = with pkgs; [
     bat
@@ -22,7 +21,7 @@
     enable = true;
     userName = "Adrian E";
     userEmail = "adrian@edelen.haus";
-
+#
     extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = false;
