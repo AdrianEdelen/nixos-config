@@ -11,11 +11,15 @@ with lib;
 
   config = mkIf config.tofu.gaming.enable {
     environment.systemPackages = with pkgs; [
+        pkgs.sqlite-web
+
         (vscode-with-extensions.override {
             vscodeExtensions = with vscode-extensions; [
                 ms-python.python
+                bbenoist.nix
             ];
         })
     ];
   };
 }
+
