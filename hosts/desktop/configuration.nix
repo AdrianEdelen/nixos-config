@@ -105,6 +105,7 @@
 
   environment.systemPackages = with pkgs; [
     wget
+    obsidian
   ];
 
   # Enable automatic login for the user.
@@ -117,6 +118,7 @@
 
   tofu.gaming.enable = true;
   tofu.bluetooth.enable = true;
+  tofu.dev.enable = true;
 
 
   #programs.steam.enable = true;
