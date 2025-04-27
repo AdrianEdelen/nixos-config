@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    vs-code-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs = { nixpkgs, home-manager, ... }@inputs:

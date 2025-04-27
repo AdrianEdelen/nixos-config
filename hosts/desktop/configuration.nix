@@ -20,6 +20,11 @@
   settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
+  services.avahi = {
+  enable = true;
+  nssmdns4 = true;
+  openFirewall = true;
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -106,7 +111,15 @@
   environment.systemPackages = with pkgs; [
     wget
     obsidian
+    #jellyfin
+    pkgs.jellyfin-media-player
+    #pkgs.jellyfin
+    #pkgs.jellyfin-web
+    #pkgs.jellyfin-ffmpeg
   ];
+
+  # Jellyfin (will probably bring this out to a 'media' module at some point)
+  #services.jellyfin.enable = true;
 
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
