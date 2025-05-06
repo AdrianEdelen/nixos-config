@@ -29,6 +29,7 @@ with lib;
                 ms-dotnettools.csdevkit
                 editorconfig.editorconfig
                 ms-vscode-remote.remote-containers
+                ms-vscode-remote.remote-ssh
 
             ];
         })
