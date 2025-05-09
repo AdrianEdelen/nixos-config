@@ -58,6 +58,16 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  fileSystems."/mnt/media" = {
+  device = "//unraid.internal.deadbolt.info/media";
+  fsType = "cifs";
+  options = [
+    # This path is committed, but the file's content is not.
+    "credentials=/home/adrian/smbcredentials"
+    # ... other options
+  ];
+};
+
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
