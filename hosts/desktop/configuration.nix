@@ -111,7 +111,7 @@
     isNormalUser = true;
     hashedPassword = "$6$Nux8v67JfYvf6PLa$pryAbDzBCA1UKbrz6nzeJR0xzzAydsFJBij6OrOHxwy1JPboF.zWlpEXiYf3.1uqqJkTS1CHZtFP98/uc6WDG1";
     description = "Adrian";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.fish;
     packages = with pkgs; [
 
@@ -168,6 +168,8 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
+
+  virtualisation.docker.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
