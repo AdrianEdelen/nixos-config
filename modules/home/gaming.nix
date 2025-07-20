@@ -19,8 +19,9 @@ with lib;
         lutris
         gamemode
         mangohud
+        mgba
     ];
-
+    
     #services.gamemode.enable = true;
 
   };

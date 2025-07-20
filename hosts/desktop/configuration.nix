@@ -126,6 +126,7 @@
     #pkgs.jellyfin
     #pkgs.jellyfin-web
     #pkgs.jellyfin-ffmpeg
+    #ollama
   ];
 
   # Jellyfin (will probably bring this out to a 'media' module at some point)
@@ -134,8 +135,13 @@
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "adrian";
+  # move these to a AI module 
+  # services.ollama = {
+  #   enable = true;
+  #   loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b" "ollama run deepseek-r1:8b" ];
+  #   acceleration = "cuda";
+  # };
 
-  # Install firefox.
   programs.fish.enable = true;
   programs.firefox.enable = true;
 
@@ -191,7 +197,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

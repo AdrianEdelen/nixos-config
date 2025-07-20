@@ -9,13 +9,15 @@ with lib;
     description = "Enable Dev Tooling";
   };
 
-  config = mkIf config.tofu.gaming.enable {
+  config = mkIf config.tofu.dev.enable {
 
     environment.sessionVariables.NIXOS_OZONE_WL = "1"; #var for vscode wayland
 
     environment.systemPackages = with pkgs; [
         pkgs.sqlite-web
-
+        pkgs.kicad
+        pkgs.iverilog
+        
         (vscode-with-extensions.override {
             vscodeExtensions = with vscode-extensions; [
                 ms-python.python
@@ -26,10 +28,18 @@ with lib;
                 ms-dotnettools.csharp
                 #alexcvzz.vscode-sqlite
                 github.vscode-github-actions
+
                 ms-dotnettools.csdevkit
                 editorconfig.editorconfig
                 ms-vscode-remote.remote-containers
                 ms-vscode-remote.remote-ssh
+                #rust
+                rust-lang.rust-analyzer
+                tamasfe.even-better-toml
+                #ai tools
+                continue.continue
+                #fpga
+                mshr-h.veriloghdl
 
             ];
         })
