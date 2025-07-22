@@ -28,7 +28,9 @@
           group = "adrian";
           extraGroups = [ "wheel" ];
           hashedPasswordFile = config.sops.secrets.adrian_password_hash.path;
-          openssh.authorizedKeys
+          openssh.authorizedKeys.keyFiles = [
+            ../../ssh/public-keys/workstation.pub
+          ];
         };
         users.groups.adrian = {};
 
