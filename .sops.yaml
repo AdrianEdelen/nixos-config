@@ -1,0 +1,5 @@
+creation_rules:
+  - path_regex: hosts/desktop_new/secrets.yaml$
+    key_groups:
+      - age:
+        - "age1zfwqjedtnamhp7r20pcw2n7uvd5elq8j984fsgwwx6kuk5a59ylqzmtey2"

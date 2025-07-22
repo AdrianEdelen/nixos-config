@@ -1,5 +1,5 @@
 {
-  description = "My NixOS system";
+  description = "Home Networking and desktops";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -7,11 +7,14 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     vs-code-extensions.url = "github:nix-community/nix-vscode-extensions";
     disko.url = "github:nix-community/disko";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
     in {
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
         inherit system;
@@ -29,6 +32,7 @@
         inherit system;
         modules = [
           inputs.disko.nixosModules.default
+          inputs.sops-nix.nixosModules.sops
           ./hosts/desktop_new/configuration.nix
           home-manager.nixosModules.home-manager
           {
@@ -38,5 +42,13 @@
           }
         ];
       };
+      devShells.${system}.default = pkgs.mkShell {
+        packages = [
+          pkgs.nixos-anywhere
+          pkgs.sops
+          pkgs.age
+          pkgs.wireguard-tools
+      ];
     };
+  };
 }

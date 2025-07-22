@@ -3,6 +3,7 @@
     imports = [ ../../modules/common ];
     config = {
         #core configuration
+        system.stateVersion = "25.05";
         networking.hostName = "bb";
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
         boot.loader.systemd-boot.enable = true;
@@ -25,6 +26,7 @@
           isNormalUser = true;
           group = "adrian";
           extraGroups = [ "wheel" ];
+          hashedPasswordFile = config.sops.secrets.adrian_password_hash.path;
         };
         users.groups.adrian = {};
 
@@ -41,7 +43,15 @@
             device = "/dev/disk/by-part-label/home";
             fsType = "ext4";
         };
+
         
-        system.stateVersion = "25.05";
+        sops = {
+            defaultSopsFile = ./secrets.yaml;
+            gnupg.sshKeyPaths = [
+                "/etc/ssh/ssh_host_ed25519_key"
+            ];
+            secrets.adrian_password_hash = {};
+        };
+
     };
 }
