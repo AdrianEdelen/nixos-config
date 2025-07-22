@@ -48,6 +48,7 @@
           pkgs.sops
           pkgs.age
           pkgs.wireguard-tools
+          pkgs.nixos-generators
       ];
     };
   };

@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, pkgs, lib, ...}:
 {
     imports = [ ../../modules/common ];
     config = {
@@ -31,15 +31,15 @@
         users.groups.adrian = {};
 
         # filesystem configuration (reference disko config)
-        fileSystems."/" = {
+        fileSystems."/" = lib.mkForce {
             device = "/dev/disk/by-part-label/nixos";
             fsType = "ext4";
         };
-        fileSystems."/boot" = {
+        fileSystems."/boot" = lib.mkForce {
             device = "/dev/disk/by-part-label/boot";
             fsType = "vfat";
         };
-        fileSystems."/home" = {
+        fileSystems."/home" = lib.mkForce {
             device = "/dev/disk/by-part-label/home";
             fsType = "ext4";
         };

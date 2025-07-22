@@ -10,9 +10,11 @@
     '';
   };
 
-  config = {
-    services.qemuGuest.enable = lib.mkIf (config.common.vm.hypervisor == "qemu") true;
+  config = lib.mkMerge [
+    (lib.mkIf (config.common.vm.hypervisor == "qemu") {
+      services.qemuGuest.enable = true;
+    })
     #services.vmware.enable = lib.mkIf (config.common.vm.hypervisor == "vmware") true;
     #services.virtualboxGuest.enable = lib.mkIf (config.common.vm.hypervisor == "virtualbox") true;
-  };
+  ];
 }
