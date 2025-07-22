@@ -16,6 +16,7 @@
             PasswordAuthentication = false;
             };
         };
+        
         time.timeZone = "America/New_York";
         
         #custom options
@@ -27,6 +28,7 @@
           group = "adrian";
           extraGroups = [ "wheel" ];
           hashedPasswordFile = config.sops.secrets.adrian_password_hash.path;
+          openssh.authorizedKeys
         };
         users.groups.adrian = {};
 
