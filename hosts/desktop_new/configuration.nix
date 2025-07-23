@@ -53,9 +53,6 @@
         
         sops = {
             defaultSopsFile = ./secrets.yaml;
-            gnupg.sshKeyPaths = [
-                "/etc/ssh/ssh_host_ed25519_key"
-            ];
             secrets.adrian_password_hash = {};
         };
 
