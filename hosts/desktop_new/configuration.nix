@@ -1,6 +1,8 @@
 { config, pkgs, lib, ...}:
 {
-    imports = [ ../../modules/common ];
+    imports = [ 
+        ../../modules/common
+        ./hardware-configuration.nix ];
     config = {
         #core configuration
         system.stateVersion = "25.05";
