@@ -27,16 +27,21 @@
   };
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Previously systemd-boot was enabled:
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true; # Only relevant for UEFI with systemd-boot
+
+  # Disable systemd-boot as your disk is MBR (Disklabel type: dos)
+  boot.loader.systemd-boot.enable = false;
+
+  # Enable GRUB for MBR/Legacy BIOS systems
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+  };
+
 
   networking.hostName = "desktop"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -59,17 +64,14 @@
   };
 
   fileSystems."/mnt/media" = {
-  device = "//unraid.internal.deadbolt.info/media";
-  fsType = "cifs";
-  options = [
-    # This path is committed, but the file's content is not.
-    "credentials=/home/adrian/smbcredentials"
-    # ... other options
-  ];
-};
+    device = "//unraid.internal.deadbolt.info/media";
+    fsType = "cifs";
+    options = [
+      "credentials=/home/adrian/smbcredentials"
+    ];
+  };
 
   # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
@@ -86,7 +88,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
+  services.pulseaudio.enable = false; # Ensure PulseAudio is disabled if using PipeWire
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -106,7 +108,7 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   security.sudo.enable = true;
-  users.mutableUsers = false;
+  users.mutableUsers = false; # Good practice for NixOS
   users.users.adrian = {
     isNormalUser = true;
     hashedPassword = "$6$Nux8v67JfYvf6PLa$pryAbDzBCA1UKbrz6nzeJR0xzzAydsFJBij6OrOHxwy1JPboF.zWlpEXiYf3.1uqqJkTS1CHZtFP98/uc6WDG1";
@@ -114,28 +116,28 @@
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.fish;
     packages = with pkgs; [
-
+      # Add user-specific packages here, e.g.,
+      # discord
+      # vlc
     ];
   };
 
   environment.systemPackages = with pkgs; [
     wget
     obsidian
-    #jellyfin
-    pkgs.jellyfin-media-player
-    #pkgs.jellyfin
-    #pkgs.jellyfin-web
-    #pkgs.jellyfin-ffmpeg
-    #ollama
+    jellyfin-media-player
+    # You had comments for jellyfin, jellyfin-web, jellyfin-ffmpeg, ollama.
+    # Only uncomment what you actually want globally installed.
   ];
 
   # Jellyfin (will probably bring this out to a 'media' module at some point)
-  #services.jellyfin.enable = true;
+  # services.jellyfin.enable = true; # Uncomment if you want the Jellyfin server
 
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "adrian";
-  # move these to a AI module 
+
+  # move these to a AI module
   # services.ollama = {
   #   enable = true;
   #   loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b" "ollama run deepseek-r1:8b" ];
@@ -145,27 +147,26 @@
   programs.fish.enable = true;
   programs.firefox.enable = true;
 
+  # Assuming 'tofu' refers to custom modules, ensure they are correctly defined
+  # and accessible.
   tofu.gaming.enable = true;
   tofu.bluetooth.enable = true;
   tofu.dev.enable = true;
 
 
-  #programs.steam.enable = true;
+  # programs.steam.enable = true; # Uncomment if you want Steam
 
   nixpkgs.config.allowUnfree = true;
-  programs.partition-manager.enable = true;
-    # Enable OpenGL
+  programs.partition-manager.enable = true; # KDE Partition Manager
+
+  # Enable OpenGL for graphics
   hardware.graphics = {
     enable = true;
   };
 
+  # NVIDIA Graphics Configuration
   services.xserver.videoDrivers = ["nvidia"];
-
-  boot = {
-
-  initrd.kernelModules = [ "nvidia" "i915" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-  };
-
+  boot.initrd.kernelModules = [ "nvidia" "i915" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -197,7 +198,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall.enable = false; # Consider enabling and configuring this for security
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
