@@ -42,6 +42,10 @@
           }
         ];
       };
+      nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [ ./hosts/iso/iso.nix ];
+      };
       devShells.${system}.default = pkgs.mkShell {
         packages = [
           pkgs.nixos-anywhere
