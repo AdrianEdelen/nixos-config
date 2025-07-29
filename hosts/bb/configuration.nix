@@ -2,7 +2,7 @@
 {
     imports = [ 
         ../../modules/common
-        ./hardware-configuration.nix ];
+        ./disko-config.nix ];
     config = {
         #core configuration
         system.stateVersion = "25.05";
@@ -35,26 +35,11 @@
           ];
         };
         users.groups.adrian = {};
-
-        # filesystem configuration (reference disko config)
-        fileSystems."/" = lib.mkForce {
-            device = "/dev/disk/by-part-label/nixos";
-            fsType = "ext4";
-        };
-        fileSystems."/boot" = lib.mkForce {
-            device = "/dev/disk/by-part-label/boot";
-            fsType = "vfat";
-        };
-        fileSystems."/home" = lib.mkForce {
-            device = "/dev/disk/by-part-label/home";
-            fsType = "ext4";
-        };
-
         
         sops = {
             defaultSopsFile = ./secrets.yaml;
+            age.keyFile = "/var/lib/sops/age/keys.txt";
             secrets.adrian_password_hash = {};
         };
-
     };
 }

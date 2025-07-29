@@ -9,9 +9,10 @@
     disko.url = "github:nix-community/disko";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixos-facter-modules, ... } @inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -28,24 +29,34 @@
           }
         ];
       };
-      nixosConfigurations.desktop_new = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.bb = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
           inputs.disko.nixosModules.default
           inputs.sops-nix.nixosModules.sops
-          ./hosts/desktop_new/configuration.nix
+          ./hosts/bb/configuration.nix
+          nixos-facter-modules.nixosModules.facter
+          { config.facter.reportPath = ./facter.json; }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.adrian = import ./hosts/desktop_new/home.nix;
+            home-manager.users.adrian = import ./hosts/bb/home.nix;
           }
         ];
       };
-      nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.live = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [ ./hosts/iso/iso.nix ];
+        modules = [ 
+          (nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
+          ./hosts/live/live.nix 
+          ({ pkgs, ... }: {
+          nix.settings.experimental-features = [ "nix-command" "flakes" ];
+          nix.registry.nixpkgs.flake = nixpkgs;
+          })
+        ];
       };
+      packages.${system}.live = self.nixosConfigurations.live.config.system.build.isoImage;
       devShells.${system}.default = pkgs.mkShell {
         packages = [
           pkgs.nixos-anywhere
@@ -53,6 +64,7 @@
           pkgs.age
           pkgs.wireguard-tools
           pkgs.nixos-generators
+          pkgs.openssl
       ];
     };
   };
