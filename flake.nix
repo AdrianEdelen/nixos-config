@@ -65,7 +65,23 @@
           pkgs.wireguard-tools
           pkgs.nixos-generators
           pkgs.openssl
-      ];
+          pkgs.ssh-to-pgp
+          pkgs.ssh-to-age
+        ];
+        shellHook = ''
+           # Start ssh-agent if it's not running
+          if [ -z "$SSH_AUTH_SOCK" ]; then
+            eval $(ssh-agent -s)
+          fi
+
+          # Check if any keys are loaded. If not, try to add default keys.
+          if ! ssh-add -l >/dev/null 2>&1; then
+            echo "No keys found in agent, attempting to add default keys..."
+            ssh-add
+          fi
+
+          echo "SSH agent is running and configured."
+        '';
+      };
     };
-  };
 }

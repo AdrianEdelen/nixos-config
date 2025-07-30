@@ -54,12 +54,26 @@ This outlines the process for installing a new machine from scratch.
       --extra-files ./tmp \
       --generate-hardware-config nixos-facter ./facter.json \
       -f .#<target-flake> \
+      --disk-encryption-keys ./ssh/tmp-keys/<target-hostname> /etc/ssh/ssh_host_ed25519_key \
       --target-host root@<target-ip>
     ```
 
 ---
 
 ## 4. Core Concepts
+
+### Creating SSH keys and integrating them with sops for target machines
+
+In order for the target machine to be able to properly decrypt secrets, you must provide sops with an AGE public key converted from an SSH public key that for the target machine.
+
+1. Enter nix shell from repo root `nix develop`
+2. Generate a key pair for the target machine `ssh-keygen -t ed25519 -f ./ssh/tmp-keys/<target-hostname> -N "" -C "root@<target-hostname>"`
+3. Convert public key to age `cat ./ssh/tmp-keys/<target-hostname>.pub | ssh-to-age`
+4. copy the output
+5. add the new key to .sops.yaml 
+6. when configuring the new host use the newly created key for sops configuration
+7. ensure the private key is sent with nixos-anywhere with the 'disk-encryption-keys' flag as demonstrated above
+
 
 ### Provisioning Files with --extra-files
 
@@ -78,3 +92,6 @@ The file is committed to source control as an **empty file**. This ensures it is
 To prevent local changes from showing up in `git status`, we tell Git to ignore changes to this specific file:
 ```bash
 git update-index --assume-unchanged ./facter.json
+
+
+### creating hashed passwords

@@ -1,9 +1,13 @@
 #define keys below
+#to add a new key run the following: nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'
 keys:
-  - &age age1zfwqjedtnamhp7r20pcw2n7uvd5elq8j984fsgwwx6kuk5a59ylqzmtey2
+  #- &age age1zfwqjedtnamhp7r20pcw2n7uvd5elq8j984fsgwwx6kuk5a59ylqzmtey2
+  - &workstation age1kmnr87jwkqazd6zprwwfeclm2nl0fdym3wf9mzsc7uu85lwhlqfsasgf49
+  - &bb age19hxwpzqn6cfl73smem8w937pqfhvd40nqhz0p46krxsv4gxeyv6sej497x
 
 creation_rules:
-  - path_regex: /secrets.yaml$
+  - path_regex: hosts/bb/secrets.yaml$
     key_groups:
       - age:
-        - *age
+        - *workstation
+        - *bb

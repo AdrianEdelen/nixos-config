@@ -38,7 +38,8 @@
         
         sops = {
             defaultSopsFile = ./secrets.yaml;
-            age.keyFile = "/var/lib/sops/age/keys.txt";
+            age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+            #age.keyFile = "/var/lib/sops/age/keys.txt";
             secrets.adrian_password_hash = {};
         };
     };
